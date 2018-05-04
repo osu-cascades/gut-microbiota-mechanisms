@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	text-align: center;
+}
+
+h1 {
+	margin: 1em;
+	margin-bottom: 1.5em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+}
+
+input {
+	margin-left: 4em;
+}
+
+.sliders {
+	width: 30%;
+	min-width: 15em;
+	display: inline-block;
+	vertical-align: top;
+	text-align: left;
+}
+
+.dish {
+	
+}
+
+.graph {
+	max-width: 60%;
+	display: inline-block;
+	text-align: center;
+}
+
