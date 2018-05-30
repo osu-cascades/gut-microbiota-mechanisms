@@ -13,7 +13,7 @@
 
 	<div class="sliders_wrap">
 		<h3>Number of Functions: 6</h3>
-		<input type="range" class="slider">
+		<input type="range" class="slider" id="numberOfFunctionsSlider">
 		<h3>Number of Species/Function: 4</h3>
 		<input type="range" class="slider">
 		<h3>Donor Depletion: 0.25</h3>
@@ -58,6 +58,15 @@
 	  // Instantiate our graph object.
 	  var container = document.getElementById('visualization');
 	  var graph3d = new vis.Graph3d(container, data, options);
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+	    document.getElementById('numberOfFunctionsSlider').onchange = changeEventHandler;
+		}, false);
+
+		function changeEventHandler(event) {
+			console.log("Update the graph!");
+		}
 	</script>
 </body>
 </html>
