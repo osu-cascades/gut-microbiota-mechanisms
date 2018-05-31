@@ -70,7 +70,8 @@ img {
 }
 
 .graph {
-	max-width: 60%;
 	display: inline-block;
-	text-align: center;
+  width: 32em;
+  height: 32em;
+  border: solid;
 }
