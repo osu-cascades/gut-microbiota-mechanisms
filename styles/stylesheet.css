@@ -12,12 +12,6 @@ h1 {
 	font-family: "Monaco";
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  width: auto;
-}
-
 .sliders_wrap {
 	width: 30%;
 	min-width: 22em;
@@ -67,10 +61,6 @@ img {
   border-radius: 50%;
   background: #a34729;
   cursor: pointer;
-}
-
-.dish {
-
 }
 
 .graph {
