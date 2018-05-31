@@ -13,9 +13,9 @@ h1 {
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    width: auto;
+  max-width: 100%;
+  height: auto;
+  width: auto;
 }
 
 .sliders_wrap {
@@ -35,38 +35,38 @@ img {
 
 .slider {
 	margin-left: 3em;
-    -webkit-appearance: none;
-    width: 70%;
+  -webkit-appearance: none;
+  width: 70%;
 	min-width: 20em;
-    height: 15px;
-    border-radius: 5px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 1;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 1;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
 }
 
 .slider:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #a34729;
-    cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #a34729;
+  cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #a34729;
-    cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #a34729;
+  cursor: pointer;
 }
 
 .dish {
