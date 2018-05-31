@@ -20,13 +20,17 @@ img {
 
 .sliders_wrap {
 	width: 30%;
-	height: 17.5em;
 	min-width: 22em;
 	display: inline-block;
 	vertical-align: top;
 	text-align: left;
 	padding: 1em;
-	padding-top: 2.5em;
+  padding-left: 6em;
+  margin-top: -2em;
+}
+
+.sliders_wrap h2 {
+  margin-left: -3em;
 }
 
 .slider {
