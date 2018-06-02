@@ -15,11 +15,11 @@
 	<div class="sliders_wrap">
     <h2>Data Set:</h2>
 		<h3>Number of Functions: <span class='sliderTextValue'></span></h3>
-		<input type="range" min="1" max="6" step="1" value="3" class="slider" id="numberOfFunctionsSlider">
+		<input type="range" min="1" max="6" step="1" value="1" class="slider" id="numberOfFunctionsSlider">
 		<h3>Minimum Species Needed: <span class='sliderTextValue'></span></h3>
-		<input type="range" min="1" max="6" step="1" value="3" class="slider" id="minimumSpeciesSlider">
+		<input type="range" min="1" max="6" step="1" value="6" class="slider" id="minimumSpeciesSlider">
 		<h3>Donor Depletion: <span class='sliderTextValue'></span></h3>
-		<input type="range" min="0.25" max="0.50" step="0.05" value ="0.35" class="slider" id="donorDepletionSlider">
+		<input type="range" min="0.25" max="0.50" step="0.05" value ="0.25" class="slider" id="donorDepletionSlider">
     <h2>Data Point:</h2>
     <h3>Probability of Establishment: <span class='sliderTextValue'></span></h3>
 		<input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
@@ -30,39 +30,36 @@
 	<div id="graph" class="graph"></div>
 
 	<script type="text/javascript">
-  var data = new vis.DataSet();
-  var counter = 0;
+  function createVisualization(d,m,z) {
+    var data = new vis.DataSet();
+    var counter = 0;
 
-  var xAxisStep = 0.2;
-  var xAxisMax = 0.9;
+    var xAxisStep = 0.2;
+    var xAxisMax = 0.9;
 
-  var yAxisStep = 4;
-  var yAxisMax = 64;
+    var yAxisStep = 4;
+    var yAxisMax = 64;
 
-  var d = 0.25;
-  var m = 6;
-  var z = 1;
+    for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
+      yAxisStep = 4;
+      for (var y = 8; y <= yAxisMax; y += yAxisStep) {
+        yAxisStep *= 2;
 
-  for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
-    yAxisStep = 4;
-    for (var y = 8; y <= yAxisMax; y += yAxisStep) {
-      yAxisStep *= 2;
+        var yd = (1 - d) * y;
+        var q = 1 - x;
 
-      var yd = (1 - d) * y;
-      var q = 1 - x;
+        var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
+        var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
+        var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
 
-      var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
-      var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
-      var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
+        if (value > 1) {
+          value = 1;
+        }
 
-      if (value > 1) {
-        value = 1;
+        console.log("x = " + x + "\ny = " + y + "\nvalue = " + value);
+        data.add({id:counter++,x:x,y:y,z:value,style:value});
       }
-
-      console.log("x = " + x + "\ny = " + y + "\nvalue = " + value);
-      data.add({id:counter++,x:x,y:y,z:value,style:value});
     }
-  }
 
 	  var options = {
 	    width:  '100%',
@@ -81,10 +78,16 @@
 
 	  var container = document.getElementById('graph');
 	  var graph3d = new vis.Graph3d(container, data, options);
+  }
 	</script>
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
+      var d = document.getElementById('donorDepletionSlider').value;
+      var m = document.getElementById('minimumSpeciesSlider').value;
+      var z = document.getElementById('numberOfFunctionsSlider').value;
+      createVisualization(d,m,z);
+
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
@@ -104,6 +107,11 @@
           textValues[i].innerHTML = event.target.value;
         }
       }
+
+      d = document.getElementById('donorDepletionSlider').value;
+      m = document.getElementById('minimumSpeciesSlider').value;
+      z = document.getElementById('numberOfFunctionsSlider').value;
+      createVisualization(d,m,z);
 		}
 	</script>
 </body>
