@@ -48,9 +48,13 @@
         var yd = (1 - d) * y;
         var q = 1 - x;
 
-        var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
-        var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
-        var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
+        if (yd - m < 0) {
+          var value = 0;
+        } else {
+          var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
+          var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
+          var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
+        }
 
         if (value > 1) {
           value = 1;
