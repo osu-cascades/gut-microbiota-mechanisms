@@ -32,6 +32,28 @@
 
 	<script type="text/javascript">
   function createVisualization() {
+    var data = createData();
+
+	  var options = {
+	    width:  '100%',
+	    height: '100%',
+	    style: 'surface',
+      cameraPosition: {
+        horizontal: 5.9,
+        vertical: 0.25
+      },
+	    showPerspective: true,
+	    showGrid: true,
+	    showShadow: false,
+	    keepAspectRatio: false,
+      yStep: 8
+	  };
+
+	  var container = document.getElementById('graph');
+	  graph3d = new vis.Graph3d(container, data, options);
+  }
+
+  function createData() {
     var data = new vis.DataSet();
     var counter = 0;
 
@@ -76,24 +98,12 @@
         data.add({id:counter++,x:x,y:y,z:value,style:value});
       }
     }
+    return data;
+  }
 
-	  var options = {
-	    width:  '100%',
-	    height: '100%',
-	    style: 'surface',
-      cameraPosition: {
-        horizontal: 5.9,
-        vertical: 0.25
-      },
-	    showPerspective: true,
-	    showGrid: true,
-	    showShadow: false,
-	    keepAspectRatio: false,
-      yStep: 8
-	  };
-
-	  var container = document.getElementById('graph');
-	  var graph3d = new vis.Graph3d(container, data, options);
+  function updateVisualization() {
+    var data = createData();
+    graph3d.setData(data);
   }
 
   //http://www.jacklmoore.com/notes/rounding-in-javascript/
@@ -117,6 +127,8 @@
 		}, false);
 
 		function changeEventHandler(event) {
+      updateVisualization();
+
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
@@ -125,7 +137,6 @@
           textValues[i].innerHTML = event.target.value;
         }
       }
-      createVisualization();
 		}
 	</script>
 </body>
