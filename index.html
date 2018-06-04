@@ -24,7 +24,7 @@
     <h3>Probability of Establishment: <span class='sliderTextValue'></span></h3>
 		<input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
 		<h3>Species/Function (Intact): <span class='sliderTextValue'></span></h3>
-		<input type="range" min="1" max="24" step="1" value="4" class="slider" id="intactSpeciesPerFunctionSlider">
+		<input type="range" min="8" max="64" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
 	</div>
 
 	<div id="graph" class="graph"></div>
@@ -34,10 +34,10 @@
     var data = new vis.DataSet();
     var counter = 0;
 
-    var xAxisStep = 0.2;
+    var xAxisStep = 0.05;
     var xAxisMax = 0.9;
 
-    var yAxisStep = 4;
+    var yAxisStep = 1;
     var yAxisMax = 64;
 
     var d = document.getElementById('donorDepletionSlider').value;
@@ -45,9 +45,7 @@
     var z = document.getElementById('numberOfFunctionsSlider').value;
 
     for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
-      yAxisStep = 4;
       for (var y = 8; y <= yAxisMax; y += yAxisStep) {
-        yAxisStep *= 2;
 
         var yd = (1 - d) * y;
         var q = 1 - x;
@@ -92,7 +90,7 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
       createVisualization();
-      
+
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
