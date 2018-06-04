@@ -30,7 +30,7 @@
 	<div id="graph" class="graph"></div>
 
 	<script type="text/javascript">
-  function createVisualization(d,m,z) {
+  function createVisualization() {
     var data = new vis.DataSet();
     var counter = 0;
 
@@ -39,6 +39,10 @@
 
     var yAxisStep = 4;
     var yAxisMax = 64;
+
+    var d = document.getElementById('donorDepletionSlider').value;
+    var m = document.getElementById('minimumSpeciesSlider').value;
+    var z = document.getElementById('numberOfFunctionsSlider').value;
 
     for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
       yAxisStep = 4;
@@ -87,11 +91,8 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-      var d = document.getElementById('donorDepletionSlider').value;
-      var m = document.getElementById('minimumSpeciesSlider').value;
-      var z = document.getElementById('numberOfFunctionsSlider').value;
-      createVisualization(d,m,z);
-
+      createVisualization();
+      
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
@@ -111,11 +112,7 @@
           textValues[i].innerHTML = event.target.value;
         }
       }
-
-      d = document.getElementById('donorDepletionSlider').value;
-      m = document.getElementById('minimumSpeciesSlider').value;
-      z = document.getElementById('numberOfFunctionsSlider').value;
-      createVisualization(d,m,z);
+      createVisualization();
 		}
 	</script>
 </body>
