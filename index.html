@@ -25,6 +25,7 @@
 		<input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
 		<h3>Species/Function (Intact): <span class='sliderTextValue'></span></h3>
 		<input type="range" min="8" max="64" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
+    <h3>Success Rate: <span id="userDataPoint"></span>%</h3>
 	</div>
 
 	<div id="graph" class="graph"></div>
@@ -44,8 +45,14 @@
     var m = document.getElementById('minimumSpeciesSlider').value;
     var z = document.getElementById('numberOfFunctionsSlider').value;
 
+    var pe = document.getElementById('probabilityEstablishmentSlider').value;
+    var isf = document.getElementById('intactSpeciesPerFunctionSlider').value;
+
     for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
       for (var y = 8; y <= yAxisMax; y += yAxisStep) {
+
+        x = round(x, 2);
+        y = round(y, 2);
 
         var yd = (1 - d) * y;
         var q = 1 - x;
@@ -62,7 +69,10 @@
           value = 1;
         }
 
-        console.log("x = " + x + "\ny = " + y + "\nvalue = " + value);
+        if (pe == x && isf == y) {
+          document.getElementById('userDataPoint').innerHTML = round(value * 100, 2);
+        }
+
         data.add({id:counter++,x:x,y:y,z:value,style:value});
       }
     }
@@ -84,6 +94,11 @@
 
 	  var container = document.getElementById('graph');
 	  var graph3d = new vis.Graph3d(container, data, options);
+  }
+
+  //http://www.jacklmoore.com/notes/rounding-in-javascript/
+  function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
   }
 	</script>
 
