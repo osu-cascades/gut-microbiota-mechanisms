@@ -3,28 +3,35 @@
 
 body {
 	text-align: center;
-	font-family: "Andale Mono";
+	font-family: "Arial";
 }
 
 h1 {
 	margin: 1em;
 	margin-bottom: 1.5em;
-	font-family: "Monaco";
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+  margin-top: 2em;
+}
+
+h4 {
+  font-size: 14px;
+  margin-top: -1em;
 }
 
 .sliders_wrap {
-	width: 30%;
-	min-width: 22em;
+	width: 25%;
 	display: inline-block;
 	vertical-align: top;
 	text-align: left;
 	padding: 1em;
-  padding-left: 6em;
   margin-top: -2em;
-}
-
-.sliders_wrap h2 {
-  margin-left: -3em;
 }
 
 .slider {
@@ -36,7 +43,7 @@ h1 {
   border-radius: 5px;
   background: #d3d3d3;
   outline: none;
-  opacity: 1;
+  opacity: 0.8;
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
@@ -63,9 +70,16 @@ h1 {
   cursor: pointer;
 }
 
+.graph_wrap {
+  display: inline-block;
+}
+
 .graph {
-	display: inline-block;
   width: 32em;
   height: 32em;
   border: solid;
+}
+
+.caption {
+  color: #808080;
 }
