@@ -104,10 +104,6 @@
           value = Math.pow(probabilityDepleted,5) / Math.pow(probabilityIntact,5);
         }
 
-        if (Number.isNaN(value)) {
-          value = 0;
-        }
-
         if (value > 1) {
           value = 1;
         }
