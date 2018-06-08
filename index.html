@@ -100,12 +100,20 @@
           var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
         }
 
+        if (Number.isNaN(value)) {
+          value = Math.pow(probabilityDepleted,5) / Math.pow(probabilityIntact,5);
+        }
+
+        if (Number.isNaN(value)) {
+          value = 0;
+        }
+
         if (value > 1) {
           value = 1;
         }
 
         if (pe == x && isf == y) {
-          document.getElementById('userDataPoint').innerHTML = round(value * 100, 2);
+          document.getElementById('userDataPoint').innerHTML = (value * 100).toFixed(2);
         }
 
         data.add({id:counter++,x:x,y:y,z:value,style:value});
