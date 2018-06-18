@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	text-align: center;
+	font-family: "Arial";
+}
+
+h1 {
+	margin: 1em;
+	margin-bottom: 1.5em;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+  margin-top: 2em;
+}
+
+h4 {
+  font-size: 14px;
+  margin-top: -1em;
+}
+
+.sliders_wrap {
+	width: 25%;
+	display: inline-block;
+	vertical-align: top;
+	text-align: left;
+	padding: 1em;
+  margin-top: -2em;
+}
+
+.slider {
+	margin-left: 3em;
+  -webkit-appearance: none;
+  width: 70%;
+	min-width: 20em;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #a34729;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #a34729;
+  cursor: pointer;
+}
+
+.graph_wrap {
+  display: inline-block;
+}
+
+.graph {
+  width: 32em;
+  height: 32em;
+  border: solid;
+}
+
+.caption {
+  color: #808080;
+}

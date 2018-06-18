@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gut Microbiota Mechanisms</title>
+  <link href="styles/stylesheet.css" rel="stylesheet" type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/4.4.1/math.js"></script>
+</head>
+
+<body>
+	<h1>Gut Microbiota Mechanisms</h1>
+
+	<div class="sliders_wrap">
+    <h2>Factors affecting the shape of the surface:</h2>
+    <h3>Number of Functions: <span class='sliderTextValue'></span></h3>
+		<h4>Number of microbe-based functions needed for health</h4>
+		<input type="range" min="1" max="10" step="1" value="1" class="slider" id="numberOfFunctionsSlider">
+    <h3>Minimum Species Needed: <span class='sliderTextValue'></span></h3>
+    <h4>Minimum number of microbe species needed per function for a function to occur</h4>
+		<input type="range" min="1" max="64" step="1" value="6" class="slider" id="minimumSpeciesSlider">
+    <h3>Donor Depletion: <span class='sliderTextValue'></span></h3>
+    <h4>Proportion of microbe community present in a depleted donor</h4>
+		<input type="range" min="0.00" max="1.00" step="0.05" value ="0.25" class="slider" id="donorDepletionSlider">
+	</div>
+
+  <div class="graph_wrap">
+	  <div id="graph" class="graph"></div>
+    <p class="caption">Click and drag to rotate. Swipe with two fingers to zoom</p>
+  </div>
+  <div class="sliders_wrap">
+    <h2>Factors affecting the location on the surface:</h2>
+    <h3>Probability of Microbe Establishment: <span class='sliderTextValue'></span></h3>
+    <h4>Probability that each donor microbe species establishes in an FMT recipient</h4>
+    <input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
+    <h3>Species / Function (Intact): <span class='sliderTextValue'></span></h3>
+    <h4>Number of species that can perform each function in a fully intact donor</h4>
+    <input type="range" min="8" max="64" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
+    <h3>Success Rate: <span id="userDataPoint"></span>%</h3>
+  </div>
+
+	<script type="text/javascript">
+  function createVisualization() {
+    var data = createData();
+
+	  var options = {
+	    width:  '100%',
+	    height: '100%',
+	    style: 'surface',
+      cameraPosition: {
+        horizontal: 5.9,
+        vertical: 0.25
+      },
+	    showPerspective: true,
+	    showGrid: true,
+	    showShadow: false,
+	    keepAspectRatio: false,
+      xLabel: 'Probability of Microbe Establishment',
+      yLabel: 'Species / Function in Intact Donor',
+      zLabel: 'Succes Rate of FMT',
+      yStep: 8
+	  };
+
+	  var container = document.getElementById('graph');
+	  graph3d = new vis.Graph3d(container, data, options);
+  }
+
+  function createData() {
+    var data = new vis.DataSet();
+    var counter = 0;
+
+    var xAxisStep = 0.05;
+    var xAxisMax = 0.9;
+
+    var yAxisStep = 1;
+    var yAxisMax = 64;
+
+    var d = document.getElementById('donorDepletionSlider').value;
+    var m = document.getElementById('minimumSpeciesSlider').value;
+    var z = document.getElementById('numberOfFunctionsSlider').value;
+
+    var pe = document.getElementById('probabilityEstablishmentSlider').value;
+    var isf = document.getElementById('intactSpeciesPerFunctionSlider').value;
+
+    for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
+      for (var y = 8; y <= yAxisMax; y += yAxisStep) {
+
+        x = round(x, 2);
+        y = round(y, 2);
+
+        var yd = (1 - d) * y;
+        var q = 1 - x;
+
+        if (yd - m < 0) {
+          var value = 0;
+        } else {
+          var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
+          var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
+          var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
+        }
+
+        if (Number.isNaN(value)) {
+          value = Math.pow(probabilityDepleted,5) / Math.pow(probabilityIntact,5);
+        }
+
+        if (value > 1) {
+          value = 1;
+        }
+
+        if (pe == x && isf == y) {
+          document.getElementById('userDataPoint').innerHTML = (value * 100).toFixed(2);
+        }
+
+        data.add({id:counter++,x:x,y:y,z:value,style:value});
+      }
+    }
+    return data;
+  }
+
+  function updateVisualization() {
+    var data = createData();
+    graph3d.setData(data);
+  }
+
+  //http://www.jacklmoore.com/notes/rounding-in-javascript/
+  function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  }
+	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+      createVisualization();
+
+      var sliders = document.getElementsByClassName('slider');
+      var textValues = document.getElementsByClassName('sliderTextValue');
+
+      for (i = 0; i < sliders.length; i++) {
+        textValues[i].innerHTML = sliders[i].value;
+        sliders[i].onchange = changeEventHandler;
+      }
+
+		}, false);
+
+		function changeEventHandler(event) {
+      updateVisualization();
+
+      var sliders = document.getElementsByClassName('slider');
+      var textValues = document.getElementsByClassName('sliderTextValue');
+
+      for (i = 0; i < sliders.length; i++) {
+        if (event.target == sliders[i]) {
+          textValues[i].innerHTML = event.target.value;
+        }
+      }
+		}
+	</script>
+</body>
+</html>
