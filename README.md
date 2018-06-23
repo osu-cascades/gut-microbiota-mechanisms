@@ -7,16 +7,14 @@ An interactive model of gut microbiota mechanisms for restoring health. From Orr
 ## Development
 
 To get a development environment up and running:
-1. Fork the repo
-2. Clone
-3. Switch to branch: gh-pages
-4. Code!
 
----
+1. Fork and clone the repo
+2. Edit _index.html_, making commits to the _master_ branch.
+3. Merge _master_ into the _gh-pages_ branch for publication via GitHub pages.
 
-## Mechanisms/Mathematics
+## Mechanisms & Mathematics
 
-The mechanisms are described by the FMT success rate in a depleted donor relative to the FMT success rate in an intact donor. This is described as:
+The mechanisms are described by the fecal microbial transplant (FMT) success rate in a depleted donor, relative to the FMT success rate in an intact donor. This is described as:
 
 **P<sub>D</sub> / P<sub>I</sub>**
 
@@ -47,17 +45,17 @@ Where:
   + **q = 1 - x**
   + **z = number of functions needed to be restored**
 
-Note:
+### Note
 
-Because of 64-bit limitations with JavaScript's maximum integer size, the equations cannot be used to safely compute all values for the visualization when the number of functions needed to be restored (z) is greater than 5. To avoid NaN values from exceedingly large numbers, the computation uses z = 5 when z > 5, as the numbers get set to 1 (100%) anyways when the result > 1. To avoid NaN values from exceedingly small numbers, the computation rounds them to 0.
-
----
+Because of 64-bit limitations with JavaScript's maximum integer size, the equations cannot be used to safely compute all values for the visualization when the number of functions needed to be restored (z) is greater than 5. To distinguish `NaN` values from exceedingly large numbers, the computation uses `z = 5` when `z > 5`, as the numbers get set to 1 (100%) anyways when the result > 1. To distinguish `NaN` values from exceedingly small numbers, the computation rounds them down to 0.
 
 ## Deployment
 
 To deploy:
-1. Push to branch gh-pages
-2. Submit a pull request
+
+1. Push your local _gh-pages_ branch to the remote _gh-pages_ branch.
+2. (Optional) Submit a pull request.
 
 ---
+
 (c) 2018 Ryder McDowell. All rights reserved.
