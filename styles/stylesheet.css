@@ -12,6 +12,11 @@ h1 {
 
 p.reference {
   font-size: 0.8em;
+  margin-bottom: 0px;
+}
+
+p.copyright {
+  font-size: 0.8em;
   margin-bottom: 3em;
 }
 
