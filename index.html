@@ -30,6 +30,7 @@
     <p class="caption">Click and drag to rotate. Scroll to zoom.</p>
     <div id="graph" class="graph"></div>
   </div>
+
   <div class="sliders_wrap">
     <h2>Factors affecting the location on the surface:</h2>
     <h4>Sliders 4 &amp; 5 affect FMT success rate, below, but do not alter the surface</h4>
@@ -99,28 +100,46 @@
     var yAxisStep = 1;
     var yAxisMax = 64;
 
-    var d = document.getElementById('donorDepletionSlider').value;
-    var m = document.getElementById('minimumSpeciesSlider').value;
-    var z = document.getElementById('numberOfFunctionsSlider').value;
+    var d = Number(document.getElementById('donorDepletionSlider').value);
+    var m = Number(document.getElementById('minimumSpeciesSlider').value);
+    var z = Number(document.getElementById('numberOfFunctionsSlider').value);
 
-    var pe = document.getElementById('probabilityEstablishmentSlider').value;
-    var isf = document.getElementById('intactSpeciesPerFunctionSlider').value;
+    var pe = Number(document.getElementById('probabilityEstablishmentSlider').value);
+    var isf = Number(document.getElementById('intactSpeciesPerFunctionSlider').value);
 
+    var yd;
+    var q;
+    var value;
+    var probabilitiesDepleted;
+    var probabilitiesIntact;
+    var probabilityDepleted;
+    var probabilityIntact;
     for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
       for (var y = 8; y <= yAxisMax; y += yAxisStep) {
 
         x = round(x, 2);
         y = round(y, 2);
 
-        var yd = (1 - d) * y;
-        var q = 1 - x;
+        yd = (1 - d) * y;
+        q = 1 - x;
 
         if (yd - m < 0) {
-          var value = 0;
+          value = 0;
         } else {
-          var probabilityDepleted = (math.factorial(yd) / (math.factorial(m) * math.factorial(yd - m))) * (Math.pow(x,m) * Math.pow(q,(yd - m)));
-          var probabilityIntact = (math.factorial(y) / (math.factorial(m) * math.factorial(y - m))) * (Math.pow(x,m) * Math.pow(q,(y - m)));
-          var value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
+          probabilitiesDepleted = [];
+          probabilitiesIntact = [];
+
+          for (var i = m; i <= y; i++) {
+            if (i <= yd) {
+              probabilitiesDepleted.push((math.factorial(yd) / (math.factorial(i) * math.factorial(yd - i))) * (Math.pow(x,i) * Math.pow(q,(yd - i)))); 
+            }
+            probabilitiesIntact.push((math.factorial(y) / (math.factorial(i) * math.factorial(y - i))) * (Math.pow(x,i) * Math.pow(q,(y - i))));
+          }
+
+          probabilityDepleted = probabilitiesDepleted.reduce((accumulator, currentValue) => accumulator + currentValue);
+          probabilityIntact = probabilitiesIntact.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+          value = Math.pow(probabilityDepleted,z) / Math.pow(probabilityIntact,z);
         }
 
         if (Number.isNaN(value)) {
@@ -132,7 +151,7 @@
         }
 
         if (pe == x && isf == y) {
-          document.getElementById('userDataPoint').innerHTML = (value * 100).toFixed(2);
+          document.getElementById('userDataPoint').innerHTML = value.toFixed(2);
         }
 
         data.add({id:counter++,x:x,y:y,z:value,style:value});
