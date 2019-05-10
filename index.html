@@ -205,7 +205,7 @@
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
-      for (i = 0; i < sliders.length; i++) {
+      for (let i = 0; i < sliders.length; i++) {
         if (event.target === sliders[i] && event.target.id === 'donorDepletionSlider') {
           var donorDepletion = donorDepletionValues[event.target.value];
           textValues[i].innerHTML = donorDepletion;
@@ -214,9 +214,9 @@
           var intactSpeciesTextValue = document.getElementById('intactSpeciesPerFunctionTextValue');
 
           var yAxisStep;
-          for (let i = 1; i < 20; i++) {
-            if (round(1/donorDepletion * i, 3) % 1 == 0) {
-              yAxisStep = round(1/donorDepletion * i, 3);
+          for (let j = 1; j < 20; j++) {
+            if (round(1/donorDepletion * j, 3) % 1 == 0) {
+              yAxisStep = round(1/donorDepletion * j, 3);
               break;
             }
           }
