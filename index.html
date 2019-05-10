@@ -43,7 +43,7 @@
     <input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
     <h3>5. Species / Function (Intact): <span class='sliderTextValue' id="intactSpeciesPerFunctionTextValue"></span></h3>
     <h4>Number of species that can perform each function in a fully intact donor (It does not make sense to set this lower than the value in Slider #2)</h4>
-    <input type="range" min="0" max="48" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
+    <input type="range" min="0" max="48" step="10" value="10" class="slider" id="intactSpeciesPerFunctionSlider">
     <h3>Success Ratio:</h3>
     <h4>FMT success ratio from a depleted donor relative to an intact donor</h4>
     <h3 id="success_rate">= <span id="userDataPoint"></span></h3>
@@ -202,8 +202,6 @@
     }, false);
 
     function changeEventHandler(event) {
-      updateVisualization();
-
       var sliders = document.getElementsByClassName('slider');
       var textValues = document.getElementsByClassName('sliderTextValue');
 
@@ -231,6 +229,8 @@
           textValues[i].innerHTML = event.target.value;
         }
       }
+      
+      updateVisualization();
     }
   </script>
 </body>
