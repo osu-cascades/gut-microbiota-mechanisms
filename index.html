@@ -27,7 +27,7 @@
     <input type="range" min="1" max="16" step="1" value="6" class="slider" id="minimumSpeciesSlider">
     <h3>3. Donor Depletion: <span class='sliderTextValue'></span></h3>
     <h4>Proportion of microbe community missing from a depleted donor</h4>
-    <input type="range" min="0.05" max="1.00" step="0.05" value ="0.25" class="slider" id="donorDepletionSlider">
+    <input type="range" min="0" max="14" step="1" value ="0" class="slider" id="donorDepletionSlider">
   </div>
 
   <div class="graph_wrap">
@@ -41,9 +41,9 @@
     <h3>4. Probability of Microbe Establishment: <span class='sliderTextValue'></span></h3>
     <h4>Probability that each donor microbe species establishes in an FMT recipient</h4>
     <input type="range" min="0.10" max="0.90" step="0.10" value="0.50" class="slider" id="probabilityEstablishmentSlider">
-    <h3>5. Species / Function (Intact): <span class='sliderTextValue'></span></h3>
+    <h3>5. Species / Function (Intact): <span class='sliderTextValue' id="intactSpeciesPerFunctionTextValue"></span></h3>
     <h4>Number of species that can perform each function in a fully intact donor (It does not make sense to set this lower than the value in Slider #2)</h4>
-    <input type="range" min="1" max="64" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
+    <input type="range" min="0" max="48" step="1" value="12" class="slider" id="intactSpeciesPerFunctionSlider">
     <h3>Success Ratio:</h3>
     <h4>FMT success ratio from a depleted donor relative to an intact donor</h4>
     <h3 id="success_rate">= <span id="userDataPoint"></span></h3>
@@ -96,18 +96,26 @@
     var data = new vis.DataSet();
     var counter = 0;
 
-    var xAxisStep = 0.05;
-    var xAxisMax = 0.9;
+    var donorDepletionValues = [0.1, 0.125, 0.2, 0.25, 0.3, 0.375, 0.4, 0.5, 0.6, 0.625, 0.7, 0.75, 0.8, 0.875, 0.9];
+    var d = donorDepletionValues[Number(document.getElementById('donorDepletionSlider').value)];
 
-    var yAxisStep = 1;
-    var yAxisMax = 64;
-
-    var d = Number(document.getElementById('donorDepletionSlider').value);
     var m = Number(document.getElementById('minimumSpeciesSlider').value);
     var z = Number(document.getElementById('numberOfFunctionsSlider').value);
 
     var pe = Number(document.getElementById('probabilityEstablishmentSlider').value);
     var isf = Number(document.getElementById('intactSpeciesPerFunctionSlider').value);
+
+    var xAxisStep = 0.05;
+    var xAxisMax = 0.9;
+
+    var yAxisStep;
+    for (let i = 1; i < 20; i++) {
+      if (round(1/d*i, 3) % 1 == 0) {
+        yAxisStep = round(1/d*i, 3);
+        break;
+      }
+    }
+    var yAxisMax = 48;
 
     var yd;
     var q;
@@ -117,13 +125,13 @@
     var probabilityDepleted;
     var probabilityIntact;
     for (var x = 0.1; x <= xAxisMax; x += xAxisStep) {
-      for (var y = 8; y <= yAxisMax; y += yAxisStep) {
+      for (var y = 0; y <= yAxisMax; y += yAxisStep) {
 
         x = round(x, 2);
         y = round(y, 2);
 
-        yd = (1 - d) * y;
-        q = 1 - x;
+        yd = Math.round((1 - d) * y);
+        q = round(1 - x, 2);
 
         if (yd - m < 0) {
           value = 0;
@@ -156,7 +164,7 @@
           document.getElementById('userDataPoint').innerHTML = value.toFixed(2);
         }
 
-        data.add({id:counter++,x:x,y:y,z:value,style:value});
+        data.add({ id: counter++, x: x, y: y, z: value, style: value });
       }
     }
     return data;
@@ -174,6 +182,8 @@
   </script>
 
   <script>
+    var donorDepletionValues = [0.1, 0.125, 0.2, 0.25, 0.3, 0.375, 0.4, 0.5, 0.6, 0.625, 0.7, 0.75, 0.8, 0.875, 0.9];
+
     document.addEventListener('DOMContentLoaded', function() {
       createVisualization();
 
@@ -181,7 +191,11 @@
       var textValues = document.getElementsByClassName('sliderTextValue');
 
       for (i = 0; i < sliders.length; i++) {
-        textValues[i].innerHTML = sliders[i].value;
+        if (sliders[i].id === 'donorDepletionSlider') {
+          textValues[i].innerHTML = donorDepletionValues[0];
+        } else {
+          textValues[i].innerHTML = sliders[i].value;
+        }
         sliders[i].onchange = changeEventHandler;
       }
 
@@ -194,7 +208,26 @@
       var textValues = document.getElementsByClassName('sliderTextValue');
 
       for (i = 0; i < sliders.length; i++) {
-        if (event.target == sliders[i]) {
+        if (event.target === sliders[i] && event.target.id === 'donorDepletionSlider') {
+          var donorDepletion = donorDepletionValues[event.target.value];
+          textValues[i].innerHTML = donorDepletion;
+
+          var intactSpeciesSlider = document.getElementById('intactSpeciesPerFunctionSlider');
+          var intactSpeciesTextValue = document.getElementById('intactSpeciesPerFunctionTextValue');
+
+          var yAxisStep;
+          for (let i = 1; i < 20; i++) {
+            if (round(1/donorDepletion * i, 3) % 1 == 0) {
+              yAxisStep = round(1/donorDepletion * i, 3);
+              break;
+            }
+          }
+
+          intactSpeciesTextValue.innerHTML = yAxisStep;
+          intactSpeciesSlider.value = yAxisStep;
+          intactSpeciesSlider.step = yAxisStep;
+
+        } else if (event.target === sliders[i]) {
           textValues[i].innerHTML = event.target.value;
         }
       }
