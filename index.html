@@ -51,6 +51,17 @@
 
   <br /><br /><br />
 
+  <div class="videos">
+    <div class="video" style="display: inline-block; margin-right: 1em;">
+      <iframe src="https://player.vimeo.com/video/335433929" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p><a href="https://vimeo.com/335433929" alt="Video: Model Overview" title="Orr, M. (2019). Gut Microbiota and Human Health: Model Overview">Model Overview</a></p>
+    </div>
+    <div class="video" style="display: inline-block; margin-left: 1em;">
+      <iframe src="https://player.vimeo.com/video/336631930" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <p><a alt="Video: Visualization Tutorial" title="Orr, M. (2019). Gut Microbiota and Human Health: Visualization Tutorial" href="https://vimeo.com/336631930">Visualization Tutorial</a></p>
+    </div>
+  </div>
+
   <h2>Comments</h2>
   <div id="disqus_thread"></div>
   <script>
@@ -141,7 +152,7 @@
 
           for (var i = m; i <= y; i++) {
             if (i <= yd) {
-              probabilitiesDepleted.push((math.factorial(yd) / (math.factorial(i) * math.factorial(yd - i))) * (Math.pow(x,i) * Math.pow(q,(yd - i)))); 
+              probabilitiesDepleted.push((math.factorial(yd) / (math.factorial(i) * math.factorial(yd - i))) * (Math.pow(x,i) * Math.pow(q,(yd - i))));
             }
             probabilitiesIntact.push((math.factorial(y) / (math.factorial(i) * math.factorial(y - i))) * (Math.pow(x,i) * Math.pow(q,(y - i))));
           }
